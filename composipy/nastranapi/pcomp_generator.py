@@ -1,5 +1,8 @@
+import numpy as np
+
 
 __all__ = ['build_sequence', 'build_pcomp']
+
 
 def _build_pm_unit(angle, times):
     '''Returns a list when there is the plus minus sign '''
@@ -12,10 +15,10 @@ def _build_pm_unit(angle, times):
 
 
 def _build_stack_unit(stacking):
-    '''Returns a list when given a unit for example \\pm45_13'''
+    '''Returns a list when given a unit for example \pm45_13'''
     stacking_values = stacking
-    is_pm = stacking_values.find('\pm') > -1
-    stacking_values = stacking_values.replace('\pm', '')
+    is_pm = stacking_values.find(r'\pm') > -1
+    stacking_values = stacking_values.replace(r'\pm', '')
     stacking_values = stacking_values.strip()   
     stacking_values = stacking_values.split('_')
     len_stacking_values = len(stacking_values)
@@ -37,6 +40,7 @@ def _build_stack_unit(stacking):
         return [angle] * times
    
     
+
 def build_sequence(stacking):
     '''
     Parameters
@@ -51,7 +55,7 @@ def build_sequence(stacking):
         
     Example
     -------
-    >>> stack = '[\pm45_{1}/0_2/90/(0/90)_1]s'
+    >>> stack = r'[\pm45_{1}/0_2/90/(0/90)_1]s'
     >>> build_sequence(stack)
     out : 
         [45.0, -45.0, 0.0, 90.0, 0.0, 90.0, 90.0, 0.0, 90.0, 0.0, -45.0, 45.0]
@@ -134,6 +138,7 @@ def _convert_to_list(value, size):
             raise ValueError(f'{value} does not fit with sequence size')
     except TypeError:
         return [value for i in range(size)]
+
 
 def _convert_sout(sout, size):
     if sout == 'FIBER':
